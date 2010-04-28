@@ -1,0 +1,17 @@
+#!/usr/bin/env perl
+use strict;
+use Plack::Request;
+use Blawd::Cmd::Command::server;
+
+$0 = 'blawd.pcgi';
+
+my $app = sub {
+    my $req = Plack::Request->new(shift);
+    my $res = Blawd::Cmd::Command::server->new(
+        repo => $ENV{BLAWD_REPO},
+        host => $ENV{BLAWD_HOST},
+        port => $ENV{BLAWD_PORT},
+    )->handle_request($req);
+    $res->finalize,
+};
+
